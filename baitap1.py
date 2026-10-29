@@ -24,23 +24,24 @@ st.write(
 
 def tao_chom_sao_va_map(M):
   if M == 4:
-    # QPSK
+    # QPSK khớp chuẩn với trọng số nhị phân của hàm dieu_che_bits
     bits_map = [
-        np.array([0, 0]),
-        np.array([1, 0]),
-        np.array([1, 1]),
-        np.array([0, 1]),
+        np.array([0, 0]),  # Index 0
+        np.array([0, 1]),  # Index 1
+        np.array([1, 0]),  # Index 2
+        np.array([1, 1]),  # Index 3
     ]
     points = np.array(
         [
-            (1 + 1j) / np.sqrt(2),
-            (-1 + 1j) / np.sqrt(2),
-            (-1 - 1j) / np.sqrt(2),
-            (1 - 1j) / np.sqrt(2),
+            (1 + 1j) / np.sqrt(2),  # Tương ứng [0, 0] (Góc phần tư 1)
+            (1 - 1j) / np.sqrt(2),  # Tương ứng [0, 1] (Góc phần tư 4)
+            (-1 + 1j) / np.sqrt(2),  # Tương ứng [1, 0] (Góc phần tư 2)
+            (-1 - 1j) / np.sqrt(2),  # Tương ứng [1, 1] (Góc phần tư 3)
         ]
     )
     return points, bits_map
 
+  # Các bậc QAM cao hơn giữ nguyên như cũ
   m = int(np.sqrt(M))
   k = int(np.log2(M))
   muc = np.arange(-(m - 1), m, 2)
@@ -50,10 +51,7 @@ def tao_chom_sao_va_map(M):
 
   bits_map = []
   for i in range(M):
-    # Tạo chuỗi bit tương ứng cho từng điểm chòm sao QAM
-    bits_val = [
-        (i >> bit_idx) & 1 for bit_idx in range(k - 1, -1, -1)
-    ]  # Gray/Binary mapping chuẩn
+    bits_val = [(i >> bit_idx) & 1 for bit_idx in range(k - 1, -1, -1)]
     bits_map.append(np.array(bits_val))
 
   return points, bits_map
